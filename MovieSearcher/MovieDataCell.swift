@@ -24,7 +24,6 @@ class MovieDataCell: UITableViewCell, Presentable {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        initViewHierarchy()
         setupLayout()
         setupStyling()
     }
@@ -43,7 +42,8 @@ class MovieDataCell: UITableViewCell, Presentable {
         super.prepareForReuse()
     }
     
-    func initViewHierarchy() {
+    func setupLayout() {
+        
         posterImageView.translatesAutoresizingMaskIntoConstraints = false
         verticalStackView.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -64,22 +64,20 @@ class MovieDataCell: UITableViewCell, Presentable {
         verticalStackView.addArrangedSubview(directorLabel)
         verticalStackView.addArrangedSubview(actorLabel)
         verticalStackView.addArrangedSubview(userRatingLabel)
-    }
-    
-    func setupLayout() {
         
         var constraint: [NSLayoutConstraint] = []
         
         //TODO: Limit, modify posterImageView width, height as ratio
         
         constraint += [posterImageView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
-                       posterImageView.heightAnchor.constraint(equalToConstant: 100),
                        posterImageView.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
                        verticalStackView.topAnchor.constraint(equalTo: self.posterImageView.bottomAnchor, constant: 10),
                        verticalStackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
                        verticalStackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
                        verticalStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
         ]
+        
+        NSLayoutConstraint.activate(constraint)
     }
     
     func setupStyling() {
@@ -90,8 +88,6 @@ class MovieDataCell: UITableViewCell, Presentable {
         verticalStackView.distribution = .equalSpacing
         verticalStackView.alignment = .fill
         verticalStackView.axis = .vertical
-        
-        
     }
     
     func configure(cellData: MovieData) {
