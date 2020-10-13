@@ -29,7 +29,6 @@ extension MovieListUseCase {
         let movieListAPI: HttpAPI
         movieListAPI = API.MovieData.movieList
         return movieListAPI.request().map { data in
-            print("movieList Request map")
             let value: MovieDataSearchResult = try self.decode(data: data)
             return value
         }
@@ -40,7 +39,6 @@ extension MovieListUseCase {
         let movieImagesAPI: HttpAPI
         movieImagesAPI = API.MovieData.movieImage
         return movieImagesAPI.request().map { data in
-            print("movieImage Request map")
             let value: MovieImageSearchResult = try self.decode(data: data)
             return value
         }

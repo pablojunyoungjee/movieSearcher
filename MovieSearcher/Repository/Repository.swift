@@ -91,9 +91,6 @@ extension HttpAPI {
         let param: Parameters = ["query":"다크나이트"]
         
         return Observable.create { emitter in
-            print("emitter")
-            print("url : \(url)")
-            print("param : \(param)")
             let request = AlamofireAPI.requestManager.request(url,
                                                               method: method,
                                                               parameters: param,
@@ -102,16 +99,11 @@ extension HttpAPI {
                                                               interceptor: nil,
                                                               requestModifier: nil)
                 .response { (dataResponse) in
-                    print("debugPrint")
-                    debugPrint(dataResponse)
-                    print("debugPrint end")
                     guard let data = dataResponse.data else { return emitter.on(.error(NSError(domain: "errorerrorerror", code: 404, userInfo: nil))) }
                     emitter.on(.next(data))
-                    print("response on next data")
             }
             
             return Disposables.create {
-                print("response cancel")
                 request.cancel()
             }
         }
@@ -139,29 +131,13 @@ internal struct AlamofireAPI {
         func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
             
             if request.task?.response == nil {
-                
-                print("retry response 3")
-                print("retry count : \(request.retryCount)")
                 completion(.retryWithDelay(3))
-                
                 if request.retryCount == 3 {
-                    print("retry count end")
                     completion(.doNotRetryWithError(error))
                 }
-                
             } else {
-                print("retry response error")
                 completion(.doNotRetryWithError(error))
             }
-            
-            
-//            if let response = request.task?.response as? HTTPURLResponse, response.statusCode == 404 {
-//                print("retry response 15")
-//                completion(.retryWithDelay(15))
-//            } else {
-//                print("retry response error")
-//                completion(.doNotRetryWithError(error))
-//            }
         }
     }
     
