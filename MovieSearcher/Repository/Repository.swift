@@ -20,7 +20,7 @@ extension API {
         public var api: String {
             switch self {
             case .movieList:
-                return "/movie/"
+                return "/movie.json/"
             case .movieImage:
                 return "/image/"
             }
@@ -53,6 +53,15 @@ protocol HttpAPI {
 }
 
 extension HttpAPI {
+    
+    var CLIENT_ID: String {
+        return "Ey2n7kVzVmCNCFkhzPXu"
+    }
+    
+    var CLIENT_SECRET: String {
+        return "bW29e_sxmE"
+    }
+    
     var httpMethod: HTTPMethod {
         switch self.method {
         case .get:
@@ -69,7 +78,7 @@ extension HttpAPI {
     }
     
     func apiUrl() -> String {
-        return "https://developers.naver.com/docs/search\(api)"
+        return "https://openapi.naver.com/v1/search\(api)"
     }
     
     public func request() -> Observable<Data> {
@@ -77,13 +86,14 @@ extension HttpAPI {
         let url = self.apiUrl()
         let method = self.httpMethod
         let encoding: ParameterEncoding = self.getEncoding(method: method)
+        let httpHeader: HTTPHeaders = self.getHeader()
 
         return Observable.create { emitter in
             let request = AlamofireAPI.requestManager.request(url,
                                                               method: method,
                                                               parameters: nil,
                                                               encoding: encoding,
-                                                              headers: nil,
+                                                              headers: httpHeader,
                                                               interceptor: nil,
                                                               requestModifier: nil)
                 .response { (dataResponse) in
@@ -95,6 +105,10 @@ extension HttpAPI {
                 request.cancel()
             }
         }
+    }
+    
+    internal func getHeader() -> HTTPHeaders {
+        return ["X-Naver-Client-Id": self.CLIENT_ID, "X-Naver-Client-Secret": self.CLIENT_SECRET]
     }
     
     internal func getEncoding(method: HTTPMethod) -> ParameterEncoding {

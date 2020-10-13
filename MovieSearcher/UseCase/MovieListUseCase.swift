@@ -9,15 +9,14 @@ import Foundation
 import RxSwift
 
 protocol MovieDataUseCase: JSONParsable {
-    func fetchMovieList()
+    func fetchMovieList() -> Observable<[MovieData]>
 }
 
 protocol MovieImageUseCase: JSONParsable {
-    func fetchMovieImages()
+    func fetchMovieImages() -> Observable<[MovieImage]>
 }
 
 class MovieListUseCase: MovieDataUseCase, MovieImageUseCase {
-    //TODO: Deinit in struct?
     deinit {
         print("\(self) deinit called ")
     }
@@ -25,23 +24,23 @@ class MovieListUseCase: MovieDataUseCase, MovieImageUseCase {
 
 
 extension MovieListUseCase {
-    func fetchMovieList() {
-        //TODO: API Call
+    func fetchMovieList() -> Observable<[MovieData]> {
+        //TODO: Check Decode
         let movieListAPI: HttpAPI
         movieListAPI = API.MovieData.movieList
-        movieListAPI.request().map { data in
-//            let value: model = try self.decode(data: data)
-//            return value
+        return movieListAPI.request().map { data in
+            let value: [MovieData] = try self.decode(data: data)
+            return value
         }
     }
     
-    func fetchMovieImages() {
-        //TODO: API Call
+    func fetchMovieImages() -> Observable<[MovieImage]> {
+        //TODO: Check Decode
         let movieImagesAPI: HttpAPI
         movieImagesAPI = API.MovieData.movieImage
-        movieImagesAPI.request().map { data in
-//            let value: model = try self.decode(data: data)
-//            return value
+        return movieImagesAPI.request().map { data in
+            let value: [MovieImage] = try self.decode(data: data)
+            return value
         }
     }
 }

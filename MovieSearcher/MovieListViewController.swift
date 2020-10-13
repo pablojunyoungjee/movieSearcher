@@ -9,17 +9,17 @@ import UIKit
 
 class MovieListViewController: UIViewController, Presentable {
     
-    let viewModel: MovieListViewModel
+    var viewModel: MovieListViewModel!
     
     //TODO: init with viewModelParam
-    init(viewModel: MovieListViewModel) {
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+//    init(viewModel: MovieListViewModel) {
+//        super.init(nibName: nil, bundle: nil)
+//    }
+//
+//    required init?(coder: NSCoder) {
+//        super.init(coder: coder)
+//        fatalError("init(coder:) has not been implemented")
+//    }
     
     deinit {
         print("\(self) deinit called ")
@@ -34,6 +34,8 @@ class MovieListViewController: UIViewController, Presentable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.viewModel = MovieListViewModel()
         // Do any additional setup after loading the view.
     }
     
