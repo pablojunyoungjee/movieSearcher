@@ -10,8 +10,12 @@ import RxSwift
 import RxCocoa
 import RxRelay
 import RxDataSources
+import Kingfisher
 
 class MovieDataCell: UITableViewCell, Presentable {
+    
+    private var disposeBag = DisposeBag()
+    
     let posterImageView = UIImageView()
     let verticalStackView = UIStackView()
     let titleLabel = UILabel()
@@ -40,6 +44,10 @@ class MovieDataCell: UITableViewCell, Presentable {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        
+        //TODO: Make Custom Image Cache Singleton Logic
+        self.disposeBag = DisposeBag()
+        self.posterImageView.kf.cancelDownloadTask()
     }
     
     func setupLayout() {
@@ -58,12 +66,12 @@ class MovieDataCell: UITableViewCell, Presentable {
         self.contentView.addSubview(verticalStackView)
         
         verticalStackView.addArrangedSubview(titleLabel)
-        verticalStackView.addArrangedSubview(linkLabel)
         verticalStackView.addArrangedSubview(subTitleLabel)
-        verticalStackView.addArrangedSubview(pubDateLabel)
         verticalStackView.addArrangedSubview(directorLabel)
         verticalStackView.addArrangedSubview(actorLabel)
+        verticalStackView.addArrangedSubview(pubDateLabel)
         verticalStackView.addArrangedSubview(userRatingLabel)
+        verticalStackView.addArrangedSubview(linkLabel)
         
         var constraint: [NSLayoutConstraint] = []
         
@@ -71,6 +79,9 @@ class MovieDataCell: UITableViewCell, Presentable {
         
         constraint += [posterImageView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
                        posterImageView.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
+                       posterImageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
+                       posterImageView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
+                       posterImageView.heightAnchor.constraint(equalToConstant: 100),
                        verticalStackView.topAnchor.constraint(equalTo: self.posterImageView.bottomAnchor, constant: 10),
                        verticalStackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
                        verticalStackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
@@ -91,6 +102,8 @@ class MovieDataCell: UITableViewCell, Presentable {
     }
     
     func configure(cellData: MovieData) {
+        let url = URL(string: cellData.image)
+        posterImageView.kf.setImage(with: url)
         titleLabel.text = cellData.title
         linkLabel.text = cellData.link
         subTitleLabel.text = cellData.subTitle

@@ -13,5 +13,6 @@ target 'MovieSearcher' do
   pod 'RxViewController'
   pod 'RxDataSources'
   pod 'Alamofire', '~> 5.0'
+  pod 'Kingfisher', '~> 5.0'
 
 end

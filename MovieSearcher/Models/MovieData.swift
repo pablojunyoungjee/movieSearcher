@@ -34,7 +34,7 @@ extension MovieData: Decodable {
         case title = "title"
         case link = "link"
         case image = "image"
-        case subTitle = "subTitle"
+        case subTitle = "subtitle"
         case pubDate = "pubDate"
         case director = "director"
         case actor = "actor"
