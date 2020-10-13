@@ -15,7 +15,9 @@ final class MovieListViewModel {
     private let disposeBag = DisposeBag()
     private let useCase: MovieListUseCase
     private let movieQueryListRelay: BehaviorRelay<[MovieQuery]> = BehaviorRelay(value: [])
-    private let movieDataListRelay: BehaviorRelay<[MovieData]> = BehaviorRelay(value: [])
+    private let movieDataListRelay: PublishSubject<[MovieData]> = PublishSubject()
+    
+    //TODO: Move to UITableViewCell
     private let movieImageListRelay: BehaviorRelay<[MovieImage]> = BehaviorRelay(value: [])
     
     //TODO: set usecase via init param
@@ -32,17 +34,23 @@ final class MovieListViewModel {
         let movieList = useCase.fetchMovieList()
         let imageList = useCase.fetchMovieImages()
 
-        Observable.combineLatest(movieList, imageList).subscribe { [weak self] (datas, images) in
-            print("movieList and imageList Onnext")
-            self?.movieDataListRelay.accept(datas)
-            self?.movieImageListRelay.accept(images)
-            } onError: { error in
-                print("movieList and imageList Error")
-            } onCompleted: {
-                print("movieList and imageList onCompleted")
-            } onDisposed: {
-                print("movieList and imageList onDisposed")
-            }.disposed(by: self.disposeBag)
+        useCase.fetchMovieList().subscribe { [weak self] (result) in
+            self?.movieDataListRelay.on(.next(result.movies))
+        }.disposed(by: self.disposeBag)
+
+        
+        //TODO: Fix
+//        Observable.combineLatest(movieList, imageList).subscribe { [weak self] (datas, images) in
+//            print("movieList and imageList Onnext")
+//            self?.movieDataListRelay.accept(datas.movies)
+//            self?.movieImageListRelay.accept(images.images)
+//            } onError: { error in
+//                print("movieList and imageList Error")
+//            } onCompleted: {
+//                print("movieList and imageList onCompleted")
+//            } onDisposed: {
+//                print("movieList and imageList onDisposed")
+//            }.disposed(by: self.disposeBag)
     }
     
     

@@ -3,4 +3,86 @@
    uuid = "CFE62493-D243-49D4-AA17-88CE51F1BCEC"
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B80D33E6-2C72-47BC-BF91-B28D11C05A23"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MovieSearcher/UseCase/MovieListUseCase.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "28"
+            endingLineNumber = "28"
+            landmarkName = "fetchMovieList()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0CB6ABBD-E3DE-439A-8BCB-030B9128667E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MovieSearcher/UseCase/MovieListUseCase.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
+            landmarkName = "fetchMovieImages()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1D129DF4-38CA-4761-A00D-1FBB7ED81430"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MovieSearcher/Repository/Repository.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
+            landmarkName = "request()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "1D129DF4-38CA-4761-A00D-1FBB7ED81430 - 7c3c43119b5c31b1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(extension in MovieSearcher):MovieSearcher.HttpAPI.request() -&gt; RxSwift.Observable&lt;Foundation.Data&gt;"
+                  moduleName = "MovieSearcher"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/pablo.jee/Desktop/Git/movieSearcher/MovieSearcher/Repository/Repository.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "93"
+                  endingLineNumber = "93"
+                  offsetFromSymbolStart = "564">
+               </Location>
+               <Location
+                  uuid = "1D129DF4-38CA-4761-A00D-1FBB7ED81430 - c2e37a9371a8ef03"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (RxSwift.AnyObserver&lt;Foundation.Data&gt;) -&gt; RxSwift.Disposable in (extension in MovieSearcher):MovieSearcher.HttpAPI.request() -&gt; RxSwift.Observable&lt;Foundation.Data&gt;"
+                  moduleName = "MovieSearcher"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/pablo.jee/Desktop/Git/movieSearcher/MovieSearcher/Repository/Repository.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "94"
+                  endingLineNumber = "94"
+                  offsetFromSymbolStart = "182">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

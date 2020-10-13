@@ -44,14 +44,14 @@ extension MovieData: Decodable {
     //TODO: DecodeIfPresent
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.title = try container.decode(String.self, forKey: .title)
-        self.link = try container.decode(String.self, forKey: .link)
-        self.image = try container.decode(String.self, forKey: .image)
-        self.subTitle = try container.decode(String.self, forKey: .subTitle)
-        self.pubDate = try container.decode(String.self, forKey: .pubDate)
-        self.director = try container.decode(String.self, forKey: .director)
-        self.actor = try container.decode(String.self, forKey: .actor)
-        self.userRating = try container.decode(String.self, forKey: .userRating)
+
+        self.title = try container.decodeIfPresent(String.self, forKey: .title) ?? "no title"
+        self.link = try container.decodeIfPresent(String.self, forKey: .link) ?? "no link"
+        self.image = try container.decodeIfPresent(String.self, forKey: .image) ?? "no image"
+        self.subTitle = try container.decodeIfPresent(String.self, forKey: .subTitle) ?? "no subtitle"
+        self.pubDate = try container.decodeIfPresent(String.self, forKey: .pubDate) ?? "no pubdate"
+        self.director = try container.decodeIfPresent(String.self, forKey: .director) ?? "no director"
+        self.actor = try container.decodeIfPresent(String.self, forKey: .actor) ?? "no actor"
+        self.userRating = try container.decodeIfPresent(String.self, forKey: .userRating) ?? "no userRating"
     }
 }

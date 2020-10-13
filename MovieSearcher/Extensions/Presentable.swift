@@ -8,7 +8,6 @@
 import Foundation
 
 protocol Presentable {
-    func initViewHierarchy()
     func setupLayout()
     func setupStyling()
 }

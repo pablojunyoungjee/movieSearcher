@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 import Alamofire
-//TODO: Real URL + Naver Application Setting
+
 public enum API { }
 
 extension API {
@@ -20,9 +20,9 @@ extension API {
         public var api: String {
             switch self {
             case .movieList:
-                return "/movie.json/"
+                return "/movie.json"
             case .movieImage:
-                return "/image/"
+                return "/image"
             }
         }
         
@@ -81,27 +81,37 @@ extension HttpAPI {
         return "https://openapi.naver.com/v1/search\(api)"
     }
     
+    //TODO: Param Set
     public func request() -> Observable<Data> {
         
         let url = self.apiUrl()
         let method = self.httpMethod
         let encoding: ParameterEncoding = self.getEncoding(method: method)
         let httpHeader: HTTPHeaders = self.getHeader()
-
+        let param: Parameters = ["query":"다크나이트"]
+        
         return Observable.create { emitter in
+            print("emitter")
+            print("url : \(url)")
+            print("param : \(param)")
             let request = AlamofireAPI.requestManager.request(url,
                                                               method: method,
-                                                              parameters: nil,
+                                                              parameters: param,
                                                               encoding: encoding,
                                                               headers: httpHeader,
                                                               interceptor: nil,
                                                               requestModifier: nil)
                 .response { (dataResponse) in
+                    print("debugPrint")
+                    debugPrint(dataResponse)
+                    print("debugPrint end")
                     guard let data = dataResponse.data else { return emitter.on(.error(NSError(domain: "errorerrorerror", code: 404, userInfo: nil))) }
                     emitter.on(.next(data))
+                    print("response on next data")
             }
             
             return Disposables.create {
+                print("response cancel")
                 request.cancel()
             }
         }
@@ -118,7 +128,7 @@ extension HttpAPI {
              .patch:
             return JSONEncoding.default
         default:
-            return URLEncoding.default
+            return URLEncoding.queryString
         }
     }
 }

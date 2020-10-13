@@ -23,6 +23,7 @@
 		36DA331B2535A9F300402BDB /* MovieQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DA331A2535A9F300402BDB /* MovieQuery.swift */; };
 		36DA331E2535D4B200402BDB /* MovieDataSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DA331D2535D4B200402BDB /* MovieDataSearchResult.swift */; };
 		36DA33212535D4D100402BDB /* MovieImageSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DA33202535D4D100402BDB /* MovieImageSearchResult.swift */; };
+		36DA332A253603A500402BDB /* MovieDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DA3329253603A500402BDB /* MovieDataCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		36DA331A2535A9F300402BDB /* MovieQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieQuery.swift; sourceTree = "<group>"; };
 		36DA331D2535D4B200402BDB /* MovieDataSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDataSearchResult.swift; sourceTree = "<group>"; };
 		36DA33202535D4D100402BDB /* MovieImageSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieImageSearchResult.swift; sourceTree = "<group>"; };
+		36DA3329253603A500402BDB /* MovieDataCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDataCell.swift; sourceTree = "<group>"; };
 		3DA333DB0AB26FD073B478E8 /* Pods-MovieSearcher.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieSearcher.release.xcconfig"; path = "Target Support Files/Pods-MovieSearcher/Pods-MovieSearcher.release.xcconfig"; sourceTree = "<group>"; };
 		769101CB86D09F28B552C15D /* Pods_MovieSearcher.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieSearcher.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -83,6 +85,7 @@
 			children = (
 				362B8D512531F4D90008AA48 /* AppDelegate.swift */,
 				362B8D552531F4D90008AA48 /* MovieListViewController.swift */,
+				36DA3329253603A500402BDB /* MovieDataCell.swift */,
 				362B8D572531F4D90008AA48 /* Main.storyboard */,
 				362B8D5A2531F4D90008AA48 /* Assets.xcassets */,
 				362B8D5C2531F4D90008AA48 /* LaunchScreen.storyboard */,
@@ -278,6 +281,7 @@
 				362B8D882532076B0008AA48 /* JSONParsable.swift in Sources */,
 				362B8D9525320D6D0008AA48 /* MovieListViewModel.swift in Sources */,
 				36DA331E2535D4B200402BDB /* MovieDataSearchResult.swift in Sources */,
+				36DA332A253603A500402BDB /* MovieDataCell.swift in Sources */,
 				36DA33212535D4D100402BDB /* MovieImageSearchResult.swift in Sources */,
 				362B8D9B253211A50008AA48 /* MovieImage.swift in Sources */,
 				362B8D98253211410008AA48 /* MovieData.swift in Sources */,
