@@ -22,6 +22,8 @@ final class MovieListViewModel {
     
     private let searchKeywordSubject: PublishSubject<String?> = PublishSubject()
     
+    //TODO: Route And Scene
+    private let routeSubject: PublishSubject<String> = PublishSubject()
     
     private var pageIndex: Int = 1
     
@@ -81,6 +83,10 @@ final class MovieListViewModel {
     var selectedQueryObservable: Observable<String> {
         return movieQueryModel.selectedQueryObservable
     }
+    
+    var routeObservable: Observable<String> {
+        return routeSubject.asObservable()
+    }
 
     // MARK: - Interactor
     func searchMovieWithUserInput(input: String?) {
@@ -107,5 +113,11 @@ final class MovieListViewModel {
             print("flag check : false")
             movieQueryModel.toggleQueryHidden(flag: false)
         }
+    }
+    
+    func didSelectMovie(indexPathRow: Int) {
+        let selectedMovie = movieDataListRelay.value[indexPathRow].title
+        let param = "\(selectedMovie), 영화"
+        routeSubject.on(.next(param))
     }
 }

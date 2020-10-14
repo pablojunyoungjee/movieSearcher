@@ -27,9 +27,9 @@ extension MovieImage: Decodable {
     enum CodingKeys: String, CodingKey {
         case title = "title"
         case link = "link"
-        case thumbNail = "thumbNail"
-        case sizeWidth = "sizeWidth"
-        case sizeHeight = "sizeHeight"
+        case thumbNail = "thumbnail"
+        case sizeWidth = "sizewidth"
+        case sizeHeight = "sizeheight"
     }
     
     //TODO: DecodeIfPresent
@@ -44,4 +44,10 @@ extension MovieImage: Decodable {
     }
 }
 
-//TODO: image cache -- medium source
+extension MovieImage: Equatable {
+    static func == (lhs: MovieImage, rhs: MovieImage) -> Bool {
+        return lhs.link == rhs.link
+    }
+}
+
+//TODO: image cache

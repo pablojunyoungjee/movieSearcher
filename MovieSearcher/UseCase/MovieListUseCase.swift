@@ -18,7 +18,7 @@ protocol MovieImageUseCase: JSONParsable {
     func fetchMovieImages(param: [String:Any]?) -> Observable<MovieImageSearchResult>
 }
 
-class MovieListUseCase: MovieDataUseCase, MovieImageUseCase {
+class MovieListUseCase: MovieDataUseCase{
     deinit {
         print("\(self) deinit called ")
     }
@@ -27,7 +27,6 @@ class MovieListUseCase: MovieDataUseCase, MovieImageUseCase {
 
 extension MovieListUseCase {
     func fetchMovieList(param: [String:Any]?) -> Observable<MovieDataSearchResult> {
-        //TODO: Check Decode
         let movieListAPI: HttpAPI
         movieListAPI = API.MovieData.movieList
         return movieListAPI.request(param: param).map { data in
@@ -35,9 +34,16 @@ extension MovieListUseCase {
             return value
         }
     }
-    
+}
+
+class MovieImageCollectionUseCase: MovieImageUseCase {
+    deinit {
+        print("\(self) deinit called ")
+    }
+}
+
+extension MovieImageCollectionUseCase {
     func fetchMovieImages(param: [String:Any]?) -> Observable<MovieImageSearchResult> {
-        //TODO: Check Decode
         let movieImagesAPI: HttpAPI
         movieImagesAPI = API.MovieData.movieImage
         return movieImagesAPI.request(param: param).map { data in

@@ -111,6 +111,13 @@ class MovieListViewController: UIViewController, Presentable {
         self.viewModel.selectedQueryObservable.subscribe(onNext: { [weak self] string in
                 self?.searchBar.text = string
             }).disposed(by: self.disposeBag)
+        
+        //TODO: Routable
+        self.viewModel.routeObservable.subscribe(onNext: { [weak self] string in
+                let viewModel = MovieImageCollectionViewModel(param: string)
+                let vc = MovieImageCollectionViewController(viewModel: viewModel)
+                self?.present(vc, animated: true, completion: nil)
+            }).disposed(by: self.disposeBag)
     }
     
     func tableViewBind() {
@@ -125,6 +132,10 @@ class MovieListViewController: UIViewController, Presentable {
         self.listView.rx.willDisplayCell.subscribe(onNext: {
             [weak self] event in
             self?.viewModel.loadMoreMovieData(index: event.indexPath.row, input: self?.searchBar.text)
+        }).disposed(by: self.disposeBag)
+        
+        self.listView.rx.itemSelected.subscribe(onNext: { [weak self] event in
+            self?.viewModel.didSelectMovie(indexPathRow: event.item)
         }).disposed(by: self.disposeBag)
     }
 }

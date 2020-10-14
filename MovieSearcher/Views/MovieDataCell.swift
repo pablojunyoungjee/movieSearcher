@@ -25,6 +25,8 @@ class MovieDataCell: UITableViewCell, Presentable {
     let directorLabel = UILabel()
     let actorLabel = UILabel()
     let userRatingLabel = UILabel()
+    let separatorView = UIView()
+    
     //TODO: five image collectionView
     
     //TODO: Move to UITableViewCellViewModel
@@ -65,9 +67,11 @@ class MovieDataCell: UITableViewCell, Presentable {
         directorLabel.translatesAutoresizingMaskIntoConstraints = false
         actorLabel.translatesAutoresizingMaskIntoConstraints = false
         userRatingLabel.translatesAutoresizingMaskIntoConstraints = false
+        separatorView.translatesAutoresizingMaskIntoConstraints = false
         
         self.contentView.addSubview(posterImageView)
         self.contentView.addSubview(verticalStackView)
+        self.contentView.addSubview(separatorView)
         
         verticalStackView.addArrangedSubview(titleLabel)
         verticalStackView.addArrangedSubview(subTitleLabel)
@@ -79,17 +83,18 @@ class MovieDataCell: UITableViewCell, Presentable {
         
         var constraint: [NSLayoutConstraint] = []
         
-        //TODO: Limit, modify posterImageView width, height as ratio
-        
         constraint += [posterImageView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
                        posterImageView.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
-                       posterImageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
-                       posterImageView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
+                       posterImageView.widthAnchor.constraint(equalToConstant: 100),
                        posterImageView.heightAnchor.constraint(equalToConstant: 100),
                        verticalStackView.topAnchor.constraint(equalTo: self.posterImageView.bottomAnchor, constant: 10),
                        verticalStackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
                        verticalStackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
-                       verticalStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
+                       separatorView.topAnchor.constraint(equalTo: self.verticalStackView.bottomAnchor, constant: 10),
+                       separatorView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
+                       separatorView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
+                       separatorView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10),
+                       separatorView.heightAnchor.constraint(equalToConstant: 2.5)
         ]
         
         NSLayoutConstraint.activate(constraint)
@@ -124,11 +129,16 @@ class MovieDataCell: UITableViewCell, Presentable {
         
         userRatingLabel.textAlignment = .center
         userRatingLabel.font = UIFont.systemFont(ofSize: 14)
+        
+        separatorView.backgroundColor = .lightGray
     }
     
     func configure(cellData: MovieDataCellViewModel) {
+        
+        
         let url = URL(string: cellData.image)
         posterImageView.kf.setImage(with: url)
+        
         titleLabel.text = cellData.title
         linkLabel.text = cellData.link
         subTitleLabel.text = cellData.subTitle
@@ -143,5 +153,4 @@ class MovieDataCell: UITableViewCell, Presentable {
     var movieImageListDataSource: Observable<[MovieImage]> {
         return movieImageListRelay.asObservable()
     }
-
 }
