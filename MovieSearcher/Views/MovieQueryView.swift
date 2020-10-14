@@ -1,5 +1,5 @@
 //
-//  SearchQueryView.swift
+//  MovieQueryView.swift
 //  MovieSearcher
 //
 //  Created by pablo.jee on 2020/10/15.
@@ -11,14 +11,15 @@ import RxRelay
 import RxCocoa
 import RxDataSources
 
-class SearchQueryView: UIView, Presentable {
+class MovieQueryView: UIView, Presentable {
     
+    private let disposeBag = DisposeBag()
     private let listView: UITableView = UITableView()
-    private var movieQueryModel: [MovieQuery] = []
+    private var viewModel: MovieQueryModel!
     
-    convenience init(viewModel: [MovieQuery]) {
-        self.init(frame: .zero)
-        self.movieQueryModel = viewModel
+    convenience init(viewModel: MovieQueryModel) {
+        self.init()
+        self.viewModel = viewModel
         setupLayout()
         setupStyling()
         bind()
@@ -48,7 +49,8 @@ class SearchQueryView: UIView, Presentable {
     
     func setupStyling() {
         listView.separatorStyle = .none
-        listView.register(SearchQueryCell.self, forCellReuseIdentifier: "SearchQueryCell")
+        listView.register(MovieQueryCell.self, forCellReuseIdentifier: "MovieQueryCell")
+        listView.rowHeight = 20
     }
     
     func bind() {
@@ -57,15 +59,12 @@ class SearchQueryView: UIView, Presentable {
     
     //TODO: ViewModel
     func tableViewBind() {
-        
-        
-        
-//        self.viewModel.movieDataListDataSource.bind(to: self.listView.rx.items) {
-//            (tableView: UITableView, index: Int, element: MovieData) in
-//            guard let cell = tableView.dequeueReusableCell(withIdentifier: "MovieDataCell") as? MovieDataCell else { return UITableViewCell() }
-//            cell.configure(cellData: element)
-//            return cell
-//        }.disposed(by: self.disposeBag)
+        self.viewModel.movieQueryList.bind(to: self.listView.rx.items) {
+            (tableView: UITableView, index: Int, element: String) in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "MovieQueryCell") as? MovieQueryCell else { return UITableViewCell() }
+            cell.configure(cellData: element)
+            return cell
+        }.disposed(by: self.disposeBag)
     }
     
     /*

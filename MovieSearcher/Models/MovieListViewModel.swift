@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import RxRelay
 import RxCocoa
 import RxDataSources
 
@@ -14,7 +15,9 @@ final class MovieListViewModel {
     //TODO: other private values, Subject, Observables stay here
     private let disposeBag = DisposeBag()
     private let useCase: MovieListUseCase
-    private let movieQueryListRelay: BehaviorRelay<[MovieQuery]> = BehaviorRelay(value: [])
+    
+    var movieQueryModel: MovieQueryModel
+    
     private let movieDataListRelay: BehaviorRelay<[MovieData]> = BehaviorRelay(value: [])
     
     private let searchKeywordSubject: PublishSubject<String?> = PublishSubject()
@@ -29,6 +32,7 @@ final class MovieListViewModel {
     //TODO: set usecase via init param
     init() {
         self.useCase = MovieListUseCase()
+        self.movieQueryModel = MovieQueryModel()
         bind()
     }
     
@@ -82,15 +86,11 @@ final class MovieListViewModel {
     var movieDataListDataSource: Observable<[MovieData]> {
         return movieDataListRelay.asObservable()
     }
-    
-    //TODO: AsDriver
-    var movieQueryListDataSource: Observable<[MovieQuery]> {
-        return movieQueryListRelay.asObservable()
-    }
 
     // MARK: - Interactor
     func searchMovieWithUserInput(input: String?) {
         searchKeywordSubject.on(.next(input))
+        movieQueryModel.addUserTextInput(input: input ?? "")
     }
     
     func loadMoreMovieData(index: Int, input: String?) {

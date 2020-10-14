@@ -15,8 +15,9 @@ import RxViewController
 class MovieListViewController: UIViewController, Presentable {
     
     private let disposeBag = DisposeBag()
-    let listView: UITableView = UITableView()
-    let searchBar: UISearchBar = UISearchBar()
+    private let listView: UITableView = UITableView()
+    private let searchBar: UISearchBar = UISearchBar()
+    private var movieQueryView: MovieQueryView!
 
     var viewModel: MovieListViewModel = MovieListViewModel()
     
@@ -48,18 +49,26 @@ class MovieListViewController: UIViewController, Presentable {
     }
 
     func setupLayout() {
+        self.movieQueryView = MovieQueryView(viewModel: self.viewModel.movieQueryModel)
+        
         var constraints: [NSLayoutConstraint] = []
         listView.translatesAutoresizingMaskIntoConstraints = false
         searchBar.translatesAutoresizingMaskIntoConstraints = false
+        movieQueryView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(listView)
         self.view.addSubview(searchBar)
+        self.view.addSubview(movieQueryView)
         constraints += [listView.topAnchor.constraint(equalTo: self.searchBar.bottomAnchor),
                         listView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
                         listView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
                         listView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
                         searchBar.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
                         searchBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-                        searchBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+                        searchBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+                        movieQueryView.topAnchor.constraint(equalTo: self.searchBar.bottomAnchor),
+                        movieQueryView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+                        movieQueryView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+                        movieQueryView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ]
         
         NSLayoutConstraint.activate(constraints)
@@ -73,6 +82,12 @@ class MovieListViewController: UIViewController, Presentable {
     }
     
     func bind(viewModel: MovieListViewModel) {
+        
+        self.rx.viewDidLoad.take(1)
+            .subscribe(onNext: { [weak self] _ in
+                self?.movieQueryView.isHidden = true
+            }).disposed(by: self.disposeBag)
+        
         self.rx.viewWillLayoutSubviews.take(1)
             .subscribe(onNext: { [weak self] _ in
                 self?.tableViewBind()

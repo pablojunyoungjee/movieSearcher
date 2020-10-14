@@ -12,10 +12,11 @@ import RxRelay
 import RxDataSources
 
 //TODO: CELLVIEWMODEL
-class SearchQueryCell: UITableViewCell, Presentable {
+class MovieQueryCell: UITableViewCell, Presentable {
 
     private var disposeBag = DisposeBag()
-    let titleLabel = UILabel()
+    private let titleLabel = UILabel()
+    private let separatorView = UIView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -43,12 +44,19 @@ class SearchQueryCell: UITableViewCell, Presentable {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(titleLabel)
         
+        separatorView.translatesAutoresizingMaskIntoConstraints = false
+        self.contentView.addSubview(separatorView)
+        
         var constraint: [NSLayoutConstraint] = []
         
         constraint += [titleLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 4),
                        titleLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 4),
                        titleLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -4),
-                       titleLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -4)
+                       titleLabel.bottomAnchor.constraint(equalTo: self.separatorView.topAnchor, constant: -4),
+                       separatorView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 4),
+                       separatorView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -4),
+                       separatorView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
+                       separatorView.heightAnchor.constraint(equalToConstant: 2.5)
         ]
         
         NSLayoutConstraint.activate(constraint)
@@ -56,6 +64,10 @@ class SearchQueryCell: UITableViewCell, Presentable {
     
     func setupStyling() {
         titleLabel.textColor = .lightGray
-        titleLabel.font = UIFont.systemFont(ofSize: 6)
+        titleLabel.font = UIFont.systemFont(ofSize: 14)
+    }
+    
+    func configure(cellData: String) {
+        titleLabel.text = cellData
     }
 }
