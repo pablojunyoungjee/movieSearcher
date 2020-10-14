@@ -55,3 +55,9 @@ extension MovieData: Decodable {
         self.userRating = try container.decodeIfPresent(String.self, forKey: .userRating) ?? "no userRating"
     }
 }
+
+extension MovieData: Equatable {
+    static func == (lhs: MovieData, rhs: MovieData) -> Bool {
+        return (lhs.title == rhs.title) && (lhs.subTitle == rhs.subTitle)
+    }
+}

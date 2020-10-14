@@ -78,7 +78,8 @@ class MovieListViewController: UIViewController, Presentable {
                 self?.tableViewBind()
             }).disposed(by: self.disposeBag)
         
-        self.searchBar.rx.text.skip(1).throttle(.milliseconds(700), scheduler: MainScheduler.instance)
+        self.searchBar.rx.text.skip(1)
+            .throttle(.milliseconds(700), scheduler: MainScheduler.instance)
             .subscribe(onNext: { string in
                 viewModel.searchMovieWithUserInput(input: string)
             }).disposed(by: self.disposeBag)
@@ -94,9 +95,7 @@ class MovieListViewController: UIViewController, Presentable {
         
         self.listView.rx.willDisplayCell.subscribe(onNext: {
             [weak self] event in
-            if event.indexPath.row == 10 {
-                self?.viewModel.increasePageIndex()
-            }
+            self?.viewModel.loadMoreMovieData(index: event.indexPath.row, input: self?.searchBar.text)
         }).disposed(by: self.disposeBag)
     }
 }

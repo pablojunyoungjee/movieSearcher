@@ -7,6 +7,8 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
+import RxDataSources
 
 protocol MovieDataUseCase: JSONParsable {
     func fetchMovieList(param: [String:Any]?) -> Observable<MovieDataSearchResult>

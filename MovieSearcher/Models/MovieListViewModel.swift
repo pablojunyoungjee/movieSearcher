@@ -15,10 +15,14 @@ final class MovieListViewModel {
     private let disposeBag = DisposeBag()
     private let useCase: MovieListUseCase
     private let movieQueryListRelay: BehaviorRelay<[MovieQuery]> = BehaviorRelay(value: [])
-    private let movieDataListRelay: PublishSubject<[MovieData]> = PublishSubject()
+    private let movieDataListRelay: BehaviorRelay<[MovieData]> = BehaviorRelay(value: [])
     
     private let searchKeywordSubject: PublishSubject<String?> = PublishSubject()
+    
+    
     private var pageIndex: Int = 1
+    
+    private var recodedIndex: Int = 0
     
     //TODO: Move to UITableViewCell
     private let movieImageListRelay: BehaviorRelay<[MovieImage]> = BehaviorRelay(value: [])
@@ -34,9 +38,12 @@ final class MovieListViewModel {
     }
     
     func bind() {
+        
         searchKeywordSubject.subscribe(onNext: { [weak self] string in
-            self?.loadMovieData(input: string, index: self?.pageIndex ?? 1)
+                self?.pageIndex = 1
+                self?.loadMovieData(input: string, index: self?.pageIndex ?? 1, isLoadMore: false)
             }).disposed(by: self.disposeBag)
+        
         
         
         //TODO: Fix
@@ -53,19 +60,31 @@ final class MovieListViewModel {
 //            }.disposed(by: self.disposeBag)
     }
     
-    private func loadMovieData(input: String?, index: Int) {
-        useCase.fetchMovieList(param: ["query": input ?? "", "start": index]).subscribe { [weak self] (result) in
-            self?.movieDataListRelay.on(.next(result.movies))
+    private func loadMovieData(input: String?, index: Int, isLoadMore: Bool) {
+        useCase.fetchMovieList(param: ["query": input ?? "", "start": index])
+            .map({ [weak self] (result) -> [MovieData] in
+                let previousValue = self?.movieDataListRelay.value ?? []
+                let receivedValue = result
+                if isLoadMore {
+                    let appended = previousValue + receivedValue.movies
+                    let nonDuplicated = appended.removeDuplicates()
+                    return nonDuplicated
+                } else {
+                    return receivedValue.movies
+                }
+            })
+            .subscribe { [weak self] (value) in
+            self?.movieDataListRelay.accept(value)
         }.disposed(by: self.disposeBag)
     }
     
-    // output to view, vc
     // MARK: - Presentation Logic
     //TODO: AsDriver
     var movieDataListDataSource: Observable<[MovieData]> {
         return movieDataListRelay.asObservable()
     }
     //TODO: AsDriver
+    //TODO: Move to UITableViewCell
     var movieImageListDataSource: Observable<[MovieImage]> {
         return movieImageListRelay.asObservable()
     }
@@ -74,16 +93,19 @@ final class MovieListViewModel {
         return movieQueryListRelay.asObservable()
     }
 
-    //input to vm
     // MARK: - Interactor
     func searchMovieWithUserInput(input: String?) {
-        //TODO: Throttle
         searchKeywordSubject.on(.next(input))
     }
     
-    func increasePageIndex() {
-        pageIndex += 1
-        print("pageIndex : \(pageIndex)")
+    func loadMoreMovieData(index: Int, input: String?) {
+        recodedIndex = index
+        print("indexCheck : \(recodedIndex)")
+        if recodedIndex == movieDataListRelay.value.count - 1 {
+            pageIndex += 1
+            loadMovieData(input: input, index: pageIndex, isLoadMore: true)
+        }
+        
     }
     
     
