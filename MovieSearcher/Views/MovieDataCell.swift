@@ -15,7 +15,7 @@ import Kingfisher
 class MovieDataCell: UITableViewCell, Presentable {
     
     private var disposeBag = DisposeBag()
-    
+
     let posterImageView = UIImageView()
     let verticalStackView = UIStackView()
     let titleLabel = UILabel()
@@ -103,12 +103,30 @@ class MovieDataCell: UITableViewCell, Presentable {
         verticalStackView.distribution = .equalSpacing
         verticalStackView.alignment = .fill
         verticalStackView.axis = .vertical
+        verticalStackView.spacing = 4
         
         [titleLabel, linkLabel, subTitleLabel, pubDateLabel, directorLabel, actorLabel, userRatingLabel]
             .forEach { $0.numberOfLines = 0 }
+        
+        titleLabel.textAlignment = .center
+        titleLabel.font = UIFont.systemFont(ofSize: 16)
+        subTitleLabel.textAlignment = .center
+        subTitleLabel.font = UIFont.systemFont(ofSize: 14)
+        
+        directorLabel.textAlignment = .center
+        directorLabel.font = UIFont.systemFont(ofSize: 13)
+        
+        actorLabel.textAlignment = .center
+        actorLabel.font = UIFont.systemFont(ofSize: 12)
+        
+        pubDateLabel.textAlignment = .center
+        pubDateLabel.font = UIFont.systemFont(ofSize: 12)
+        
+        userRatingLabel.textAlignment = .center
+        userRatingLabel.font = UIFont.systemFont(ofSize: 14)
     }
     
-    func configure(cellData: MovieData) {
+    func configure(cellData: MovieDataCellViewModel) {
         let url = URL(string: cellData.image)
         posterImageView.kf.setImage(with: url)
         titleLabel.text = cellData.title

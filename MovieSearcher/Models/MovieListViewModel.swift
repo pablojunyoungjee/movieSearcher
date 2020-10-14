@@ -87,7 +87,6 @@ final class MovieListViewModel {
         searchKeywordSubject.on(.next(input))
     }
     
-    //TODO: Fix loadmore when select query
     func loadMoreMovieData(index: Int, input: String?) {
         recodedIndex = index
         print("load more index : \(index)")

@@ -117,7 +117,8 @@ class MovieListViewController: UIViewController, Presentable {
         self.viewModel.movieDataListDataSource.bind(to: self.listView.rx.items) {
             (tableView: UITableView, index: Int, element: MovieData) in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MovieDataCell") as? MovieDataCell else { return UITableViewCell() }
-            cell.configure(cellData: element)
+            let cellViewModel = MovieDataCellViewModel(viewModel: element)
+            cell.configure(cellData: cellViewModel)
             return cell
         }.disposed(by: self.disposeBag)
         
