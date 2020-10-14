@@ -25,7 +25,7 @@ class MovieDataCell: UITableViewCell, Presentable {
     let directorLabel = UILabel()
     let actorLabel = UILabel()
     let userRatingLabel = UILabel()
-    
+    //TODO: five image collectionView
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupLayout()
@@ -99,6 +99,9 @@ class MovieDataCell: UITableViewCell, Presentable {
         verticalStackView.distribution = .equalSpacing
         verticalStackView.alignment = .fill
         verticalStackView.axis = .vertical
+        
+        [titleLabel, linkLabel, subTitleLabel, pubDateLabel, directorLabel, actorLabel, userRatingLabel]
+            .forEach { $0.numberOfLines = 0 }
     }
     
     func configure(cellData: MovieData) {

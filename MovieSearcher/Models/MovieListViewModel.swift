@@ -17,27 +17,27 @@ final class MovieListViewModel {
     private let movieQueryListRelay: BehaviorRelay<[MovieQuery]> = BehaviorRelay(value: [])
     private let movieDataListRelay: PublishSubject<[MovieData]> = PublishSubject()
     
+    private let searchKeywordSubject: PublishSubject<String?> = PublishSubject()
+    private var pageIndex: Int = 1
+    
     //TODO: Move to UITableViewCell
     private let movieImageListRelay: BehaviorRelay<[MovieImage]> = BehaviorRelay(value: [])
     
     //TODO: set usecase via init param
     init() {
         self.useCase = MovieListUseCase()
-        load()
+        bind()
     }
     
     deinit {
         print("\(self) deinit called ")
     }
     
-    func load() {
-        let movieList = useCase.fetchMovieList()
-        let imageList = useCase.fetchMovieImages()
-
-        useCase.fetchMovieList().subscribe { [weak self] (result) in
-            self?.movieDataListRelay.on(.next(result.movies))
-        }.disposed(by: self.disposeBag)
-
+    func bind() {
+        searchKeywordSubject.subscribe(onNext: { [weak self] string in
+            self?.loadMovieData(input: string, index: self?.pageIndex ?? 1)
+            }).disposed(by: self.disposeBag)
+        
         
         //TODO: Fix
 //        Observable.combineLatest(movieList, imageList).subscribe { [weak self] (datas, images) in
@@ -53,6 +53,11 @@ final class MovieListViewModel {
 //            }.disposed(by: self.disposeBag)
     }
     
+    private func loadMovieData(input: String?, index: Int) {
+        useCase.fetchMovieList(param: ["query": input ?? "", "start": index]).subscribe { [weak self] (result) in
+            self?.movieDataListRelay.on(.next(result.movies))
+        }.disposed(by: self.disposeBag)
+    }
     
     // output to view, vc
     // MARK: - Presentation Logic
@@ -71,6 +76,15 @@ final class MovieListViewModel {
 
     //input to vm
     // MARK: - Interactor
+    func searchMovieWithUserInput(input: String?) {
+        //TODO: Throttle
+        searchKeywordSubject.on(.next(input))
+    }
+    
+    func increasePageIndex() {
+        pageIndex += 1
+        print("pageIndex : \(pageIndex)")
+    }
     
     
 }

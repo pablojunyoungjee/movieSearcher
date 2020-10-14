@@ -49,7 +49,7 @@ protocol HttpAPI {
     var api: String { get }
     var method: HttpMethodTypes { get }
     
-    func request() -> Observable<Data>
+    func request(param: Parameters?) -> Observable<Data>
 }
 
 extension HttpAPI {
@@ -82,14 +82,13 @@ extension HttpAPI {
     }
     
     //TODO: Param Set
-    public func request() -> Observable<Data> {
+    public func request(param: Parameters?) -> Observable<Data> {
         
         let url = self.apiUrl()
         let method = self.httpMethod
         let encoding: ParameterEncoding = self.getEncoding(method: method)
         let httpHeader: HTTPHeaders = self.getHeader()
-        let param: Parameters = ["query":"다크나이트"]
-        
+        print("paramCheck : \(param)")
         return Observable.create { emitter in
             let request = AlamofireAPI.requestManager.request(url,
                                                               method: method,

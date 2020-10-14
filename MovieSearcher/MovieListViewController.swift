@@ -16,6 +16,7 @@ class MovieListViewController: UIViewController, Presentable {
     
     private let disposeBag = DisposeBag()
     let listView: UITableView = UITableView()
+    let searchBar: UISearchBar = UISearchBar()
 
     var viewModel: MovieListViewModel = MovieListViewModel()
     
@@ -49,11 +50,16 @@ class MovieListViewController: UIViewController, Presentable {
     func setupLayout() {
         var constraints: [NSLayoutConstraint] = []
         listView.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(listView)
-        constraints += [listView.topAnchor.constraint(equalTo: self.view.topAnchor),
+        self.view.addSubview(searchBar)
+        constraints += [listView.topAnchor.constraint(equalTo: self.searchBar.bottomAnchor),
                         listView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
                         listView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-                        listView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+                        listView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+                        searchBar.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+                        searchBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+                        searchBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
         ]
         
         NSLayoutConstraint.activate(constraints)
@@ -71,6 +77,11 @@ class MovieListViewController: UIViewController, Presentable {
             .subscribe(onNext: { [weak self] _ in
                 self?.tableViewBind()
             }).disposed(by: self.disposeBag)
+        
+        self.searchBar.rx.text.skip(1).throttle(.milliseconds(700), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { string in
+                viewModel.searchMovieWithUserInput(input: string)
+            }).disposed(by: self.disposeBag)
     }
     
     func tableViewBind() {
@@ -80,5 +91,12 @@ class MovieListViewController: UIViewController, Presentable {
             cell.configure(cellData: element)
             return cell
         }.disposed(by: self.disposeBag)
+        
+        self.listView.rx.willDisplayCell.subscribe(onNext: {
+            [weak self] event in
+            if event.indexPath.row == 10 {
+                self?.viewModel.increasePageIndex()
+            }
+        }).disposed(by: self.disposeBag)
     }
 }
