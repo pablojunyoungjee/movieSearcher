@@ -108,6 +108,9 @@ class MovieListViewController: UIViewController, Presentable {
                 viewModel.searchMovieWithUserInput(input: string)
             }).disposed(by: self.disposeBag)
         
+        self.viewModel.selectedQueryObservable.subscribe(onNext: { [weak self] string in
+                self?.searchBar.text = string
+            }).disposed(by: self.disposeBag)
     }
     
     func tableViewBind() {

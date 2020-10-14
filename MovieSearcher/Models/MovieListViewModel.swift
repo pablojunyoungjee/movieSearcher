@@ -77,6 +77,10 @@ final class MovieListViewModel {
     var movieDataListDataSource: Observable<[MovieData]> {
         return movieDataListRelay.asObservable()
     }
+    
+    var selectedQueryObservable: Observable<String> {
+        return movieQueryModel.selectedQueryObservable
+    }
 
     // MARK: - Interactor
     func searchMovieWithUserInput(input: String?) {
