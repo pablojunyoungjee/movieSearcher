@@ -24,8 +24,7 @@ final class MovieListViewModel {
     
     private var recodedIndex: Int = 0
     
-    //TODO: Move to UITableViewCell
-    private let movieImageListRelay: BehaviorRelay<[MovieImage]> = BehaviorRelay(value: [])
+    
     
     //TODO: set usecase via init param
     init() {
@@ -83,11 +82,7 @@ final class MovieListViewModel {
     var movieDataListDataSource: Observable<[MovieData]> {
         return movieDataListRelay.asObservable()
     }
-    //TODO: AsDriver
-    //TODO: Move to UITableViewCell
-    var movieImageListDataSource: Observable<[MovieImage]> {
-        return movieImageListRelay.asObservable()
-    }
+    
     //TODO: AsDriver
     var movieQueryListDataSource: Observable<[MovieQuery]> {
         return movieQueryListRelay.asObservable()

@@ -26,12 +26,16 @@ class MovieDataCell: UITableViewCell, Presentable {
     let actorLabel = UILabel()
     let userRatingLabel = UILabel()
     //TODO: five image collectionView
+    
+    //TODO: Move to UITableViewCellViewModel
+    private let movieImageListRelay: BehaviorRelay<[MovieImage]> = BehaviorRelay(value: [])
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupLayout()
         setupStyling()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -114,6 +118,12 @@ class MovieDataCell: UITableViewCell, Presentable {
         directorLabel.text = cellData.director
         actorLabel.text = cellData.actor
         userRatingLabel.text = cellData.userRating
+    }
+    
+    //TODO: AsDriver
+    //TODO: Move to UITableViewCellViewModel
+    var movieImageListDataSource: Observable<[MovieImage]> {
+        return movieImageListRelay.asObservable()
     }
 
 }
