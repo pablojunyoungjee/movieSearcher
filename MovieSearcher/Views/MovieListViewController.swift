@@ -93,11 +93,21 @@ class MovieListViewController: UIViewController, Presentable {
                 self?.tableViewBind()
             }).disposed(by: self.disposeBag)
         
+        
+        let searchBarTextObservable = self.searchBar.rx.text.throttle(.milliseconds(700), scheduler: MainScheduler.instance)
+        let searchBarDidBeginEditingObservable = self.searchBar.rx.textDidBeginEditing
+        
+        Observable.combineLatest(searchBarTextObservable, searchBarDidBeginEditingObservable)
+            .subscribe(onNext: { [weak self] string, _ in
+                self?.viewModel.toggleQueryHidden(input: string)
+            }).disposed(by: self.disposeBag)
+        
         self.searchBar.rx.text.skip(1)
-            .throttle(.milliseconds(700), scheduler: MainScheduler.instance)
+            .throttle(.milliseconds(1700), scheduler: MainScheduler.instance)
             .subscribe(onNext: { string in
                 viewModel.searchMovieWithUserInput(input: string)
             }).disposed(by: self.disposeBag)
+        
     }
     
     func tableViewBind() {

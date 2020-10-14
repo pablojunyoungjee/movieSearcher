@@ -14,34 +14,48 @@ import RxDataSources
 struct MovieQueryModel {
 
     private let disposeBag = DisposeBag()
-    private var searchedText: [String]
+
+    private let movieQueryListRelay: BehaviorRelay<[String]> = BehaviorRelay(value: [])
     private let selectedQuerySubject: PublishSubject<String> = PublishSubject()
+    private let toggleHiddenSubject: PublishSubject<Bool> = PublishSubject()
     
     init() {
-        self.searchedText = []
+        
     }
     
     // MARK: - Presentation Logic
     var movieQueryList: Observable<[String]> {
-        Observable.create { emitter in
-            emitter.onNext(searchedText)
-            return Disposables.create()
-        }
+        return movieQueryListRelay.asObservable()
     }
     
     var selectedQueryObservable: Observable<String> {
         return selectedQuerySubject.asObservable()
     }
     
+    var toggleHiddenObservable: Observable<Bool> {
+        return toggleHiddenSubject.asObservable()
+    }
+    
     
     // MARK: - Interactor
-    mutating func addUserTextInput(input: String) {
+    func addUserTextInput(input: String) {
+        var searchedText = movieQueryListRelay.value
+        if searchedText.count == 10 {
+            searchedText.removeFirst()
+        }
+        
         searchedText.append(input)
+        
+        movieQueryListRelay.accept(searchedText)
     }
     
     func didUserSelectQuery(indexPathRow: Int) {
-        let text = searchedText[indexPathRow]
+        let text = movieQueryListRelay.value[indexPathRow]
         selectedQuerySubject.on(.next(text))
+    }
+    
+    func toggleQueryHidden(flag: Bool) {
+        toggleHiddenSubject.on(.next(flag))
     }
     
 }

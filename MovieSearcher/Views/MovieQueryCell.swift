@@ -65,6 +65,7 @@ class MovieQueryCell: UITableViewCell, Presentable {
     func setupStyling() {
         titleLabel.textColor = .lightGray
         titleLabel.font = UIFont.systemFont(ofSize: 14)
+        titleLabel.textAlignment = .center
     }
     
     func configure(cellData: String) {

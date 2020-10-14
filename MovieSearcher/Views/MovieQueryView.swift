@@ -50,11 +50,15 @@ class MovieQueryView: UIView, Presentable {
     func setupStyling() {
         listView.separatorStyle = .none
         listView.register(MovieQueryCell.self, forCellReuseIdentifier: "MovieQueryCell")
-        listView.rowHeight = 20
+        listView.rowHeight = 50
     }
     
     func bind() {
         tableViewBind()
+        
+        viewModel.toggleHiddenObservable.subscribe(onNext: { [weak self] value in
+            self?.isHidden = value
+        }).disposed(by: self.disposeBag)
     }
     
     //TODO: ViewModel
@@ -62,9 +66,15 @@ class MovieQueryView: UIView, Presentable {
         self.viewModel.movieQueryList.bind(to: self.listView.rx.items) {
             (tableView: UITableView, index: Int, element: String) in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MovieQueryCell") as? MovieQueryCell else { return UITableViewCell() }
+            print("query element check : \(element)")
             cell.configure(cellData: element)
             return cell
         }.disposed(by: self.disposeBag)
+        
+        self.listView.rx.itemSelected.subscribe(onNext: { [weak self] event in
+            self?.viewModel.didUserSelectQuery(indexPathRow: event.item)
+            self?.viewModel.toggleQueryHidden(flag: true)
+        }).disposed(by: self.disposeBag)
     }
     
     /*

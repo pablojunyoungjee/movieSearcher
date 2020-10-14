@@ -47,23 +47,14 @@ final class MovieListViewModel {
                 self?.loadMovieData(input: string, index: self?.pageIndex ?? 1, isLoadMore: false)
             }).disposed(by: self.disposeBag)
         
-        
-        
-        //TODO: Fix
-//        Observable.combineLatest(movieList, imageList).subscribe { [weak self] (datas, images) in
-//            print("movieList and imageList Onnext")
-//            self?.movieDataListRelay.accept(datas.movies)
-//            self?.movieImageListRelay.accept(images.images)
-//            } onError: { error in
-//                print("movieList and imageList Error")
-//            } onCompleted: {
-//                print("movieList and imageList onCompleted")
-//            } onDisposed: {
-//                print("movieList and imageList onDisposed")
-//            }.disposed(by: self.disposeBag)
+        movieQueryModel.selectedQueryObservable.subscribe(onNext: {[weak self] value in
+            self?.pageIndex = 1
+            self?.loadMovieData(input: value, index: self?.pageIndex ?? 1, isLoadMore: false)
+            }).disposed(by: self.disposeBag)
     }
     
     private func loadMovieData(input: String?, index: Int, isLoadMore: Bool) {
+        movieQueryModel.addUserTextInput(input: input ?? "")
         useCase.fetchMovieList(param: ["query": input ?? "", "start": index])
             .map({ [weak self] (result) -> [MovieData] in
                 let previousValue = self?.movieDataListRelay.value ?? []
@@ -90,18 +81,28 @@ final class MovieListViewModel {
     // MARK: - Interactor
     func searchMovieWithUserInput(input: String?) {
         searchKeywordSubject.on(.next(input))
-        movieQueryModel.addUserTextInput(input: input ?? "")
     }
     
+    //TODO: Fix loadmore when select query
     func loadMoreMovieData(index: Int, input: String?) {
         recodedIndex = index
-        print("indexCheck : \(recodedIndex)")
+        print("load more index : \(index)")
+        print("load more relay count : \(movieDataListRelay.value.count)")
+        
         if recodedIndex == movieDataListRelay.value.count - 1 {
             pageIndex += 1
             loadMovieData(input: input, index: pageIndex, isLoadMore: true)
         }
-        
     }
     
-    
+    func toggleQueryHidden(input: String?) {
+        if let input = input
+           ,input.count > 0 {
+            print("flag check : true")
+            movieQueryModel.toggleQueryHidden(flag: true)
+        } else {
+            print("flag check : false")
+            movieQueryModel.toggleQueryHidden(flag: false)
+        }
+    }
 }
