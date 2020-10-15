@@ -88,7 +88,7 @@ extension HttpAPI {
         let method = self.httpMethod
         let encoding: ParameterEncoding = self.getEncoding(method: method)
         let httpHeader: HTTPHeaders = self.getHeader()
-        print("paramCheck : \(param)")
+        
         return Observable.create { emitter in
             let request = AlamofireAPI.requestManager.request(url,
                                                               method: method,

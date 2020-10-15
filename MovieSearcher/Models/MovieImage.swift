@@ -36,11 +36,11 @@ extension MovieImage: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.title = try container.decode(String.self, forKey: .title)
-        self.link = try container.decode(String.self, forKey: .link)
-        self.thumbNail = try container.decode(String.self, forKey: .thumbNail)
-        self.sizeWidth = try container.decode(String.self, forKey: .sizeWidth)
-        self.sizeHeight = try container.decode(String.self, forKey: .sizeHeight)
+        self.title = try container.decodeIfPresent(String.self, forKey: .title) ?? ""
+        self.link = try container.decodeIfPresent(String.self, forKey: .link) ?? ""
+        self.thumbNail = try container.decodeIfPresent(String.self, forKey: .thumbNail) ?? ""
+        self.sizeWidth = try container.decodeIfPresent(String.self, forKey: .sizeWidth) ?? ""
+        self.sizeHeight = try container.decodeIfPresent(String.self, forKey: .sizeHeight) ?? ""
     }
 }
 
@@ -49,5 +49,3 @@ extension MovieImage: Equatable {
         return lhs.link == rhs.link
     }
 }
-
-//TODO: image cache

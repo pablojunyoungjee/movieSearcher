@@ -61,12 +61,10 @@ class MovieQueryView: UIView, Presentable {
         }).disposed(by: self.disposeBag)
     }
     
-    //TODO: ViewModel
     func tableViewBind() {
         self.viewModel.movieQueryList.bind(to: self.listView.rx.items) {
             (tableView: UITableView, index: Int, element: String) in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MovieQueryCell") as? MovieQueryCell else { return UITableViewCell() }
-            print("query element check : \(element)")
             cell.configure(cellData: element)
             return cell
         }.disposed(by: self.disposeBag)

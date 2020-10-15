@@ -22,9 +22,6 @@ class MovieImageCollectionViewModel {
     
     private let param: String
     
-    //TODO: Route And Scene
-    private let routeSubject: PublishSubject<String> = PublishSubject()
-    
     private var pageIndex: Int = 1
     
     private var recodedIndex: Int = 0
@@ -67,17 +64,10 @@ class MovieImageCollectionViewModel {
         return movieImageListRelay
     }
     
-    var routeObservable: Observable<String> {
-        return routeSubject.asObservable()
-    }
-    
-    
     // MARK: - Interactor
     
     func loadMoreMovieData(index: Int) {
         recodedIndex = index
-        print("load more index : \(index)")
-        print("load more relay count : \(movieImageListRelay.value.count)")
         
         if recodedIndex == movieImageListRelay.value.count - 1 {
             pageIndex += 1
@@ -85,8 +75,4 @@ class MovieImageCollectionViewModel {
         }
     }
     
-    
-    func didTapClose() {
-        routeSubject.on(.next(""))
-    }
 }

@@ -6,13 +6,13 @@
 //
 
 import Foundation
-//TODO: FlatMapDecodable, requestAndDecode
+
 protocol JSONParsable {
     func decode<T: Decodable>(data: Data) throws -> T
 }
 
 extension JSONParsable {
-    //에러처리가 이 안에서 되는 것이 더 나은 구조일 듯..."파싱에러에 대해서는..."
+    
     func decode<T: Decodable>(data: Data) throws -> T {
         
         do {

@@ -12,7 +12,7 @@ import RxCocoa
 import RxDataSources
 import RxViewController
 
-class MovieListViewController: UIViewController, Presentable {
+class MovieListViewController: UIViewController, Presentable, MovieListSceneRoutable {
     
     private let disposeBag = DisposeBag()
     private let listView: UITableView = UITableView()
@@ -20,17 +20,7 @@ class MovieListViewController: UIViewController, Presentable {
     private var movieQueryView: MovieQueryView!
 
     var viewModel: MovieListViewModel = MovieListViewModel()
-    
-    //TODO: init with viewModelParam
-//    init(viewModel: MovieListViewModel) {
-//        super.init(nibName: nil, bundle: nil)
-//    }
-//
-//    required init?(coder: NSCoder) {
-//        super.init(coder: coder)
-//        fatalError("init(coder:) has not been implemented")
-//    }
-    
+
     deinit {
         print("\(self) deinit called ")
     }
@@ -112,11 +102,8 @@ class MovieListViewController: UIViewController, Presentable {
                 self?.searchBar.text = string
             }).disposed(by: self.disposeBag)
         
-        //TODO: Routable
-        self.viewModel.routeObservable.subscribe(onNext: { [weak self] string in
-                let viewModel = MovieImageCollectionViewModel(param: string)
-                let vc = MovieImageCollectionViewController(viewModel: viewModel)
-                self?.present(vc, animated: true, completion: nil)
+        self.viewModel.routeObservable.subscribe(onNext: { [weak self] scene in
+            self?.route(to: scene)
             }).disposed(by: self.disposeBag)
     }
     

@@ -11,7 +11,6 @@ import RxCocoa
 import RxRelay
 import RxDataSources
 
-//TODO: CELLVIEWMODEL
 class MovieQueryCell: UITableViewCell, Presentable {
 
     private var disposeBag = DisposeBag()

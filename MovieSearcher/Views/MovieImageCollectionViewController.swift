@@ -12,9 +12,8 @@ import RxCocoa
 import RxDataSources
 import RxViewController
 
-class MovieImageCollectionViewController: UIViewController, Presentable {
+class MovieImageCollectionViewController: UIViewController, Presentable, Scenable {
     
-    //TODO: RealViewModel
     let viewModel: MovieImageCollectionViewModel
     private let disposeBag = DisposeBag()
     private var collectionView: UICollectionView!

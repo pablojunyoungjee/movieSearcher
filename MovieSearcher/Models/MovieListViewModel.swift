@@ -12,7 +12,7 @@ import RxCocoa
 import RxDataSources
 
 final class MovieListViewModel {
-    //TODO: other private values, Subject, Observables stay here
+    
     private let disposeBag = DisposeBag()
     private let useCase: MovieListUseCase
     
@@ -22,16 +22,13 @@ final class MovieListViewModel {
     
     private let searchKeywordSubject: PublishSubject<String?> = PublishSubject()
     
-    //TODO: Route And Scene
-    private let routeSubject: PublishSubject<String> = PublishSubject()
+    private let routeSubject: PublishSubject<Scene> = PublishSubject()
     
     private var pageIndex: Int = 1
     
     private var recodedIndex: Int = 0
     
     
-    
-    //TODO: set usecase via init param
     init() {
         self.useCase = MovieListUseCase()
         self.movieQueryModel = MovieQueryModel()
@@ -75,7 +72,6 @@ final class MovieListViewModel {
     }
     
     // MARK: - Presentation Logic
-    //TODO: AsDriver
     var movieDataListDataSource: Observable<[MovieData]> {
         return movieDataListRelay.asObservable()
     }
@@ -84,7 +80,7 @@ final class MovieListViewModel {
         return movieQueryModel.selectedQueryObservable
     }
     
-    var routeObservable: Observable<String> {
+    var routeObservable: Observable<Scene> {
         return routeSubject.asObservable()
     }
 
@@ -95,9 +91,7 @@ final class MovieListViewModel {
     
     func loadMoreMovieData(index: Int, input: String?) {
         recodedIndex = index
-        print("load more index : \(index)")
-        print("load more relay count : \(movieDataListRelay.value.count)")
-        
+
         if recodedIndex == movieDataListRelay.value.count - 1 {
             pageIndex += 1
             loadMovieData(input: input, index: pageIndex, isLoadMore: true)
@@ -107,10 +101,8 @@ final class MovieListViewModel {
     func toggleQueryHidden(input: String?) {
         if let input = input
            ,input.count > 0 {
-            print("flag check : true")
             movieQueryModel.toggleQueryHidden(flag: true)
         } else {
-            print("flag check : false")
             movieQueryModel.toggleQueryHidden(flag: false)
         }
     }
@@ -118,6 +110,15 @@ final class MovieListViewModel {
     func didSelectMovie(indexPathRow: Int) {
         let selectedMovie = movieDataListRelay.value[indexPathRow].title
         let param = "\(selectedMovie), 영화"
-        routeSubject.on(.next(param))
+        let dependency = MovieImageSceneDependency(param: param)
+        routeSubject.on(.next(.movieImages(SceneContext(dependency: dependency))))
+    }
+}
+
+struct MovieImageSceneDependency {
+    let param: String
+    
+    init(param: String) {
+        self.param = param
     }
 }

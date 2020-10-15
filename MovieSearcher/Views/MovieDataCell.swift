@@ -27,9 +27,6 @@ class MovieDataCell: UITableViewCell, Presentable {
     let userRatingLabel = UILabel()
     let separatorView = UIView()
     
-    //TODO: five image collectionView
-    
-    //TODO: Move to UITableViewCellViewModel
     private let movieImageListRelay: BehaviorRelay<[MovieImage]> = BehaviorRelay(value: [])
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -51,7 +48,6 @@ class MovieDataCell: UITableViewCell, Presentable {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        //TODO: Make Custom Image Cache Singleton Logic
         self.disposeBag = DisposeBag()
         self.posterImageView.kf.cancelDownloadTask()
     }
@@ -102,7 +98,6 @@ class MovieDataCell: UITableViewCell, Presentable {
     
     func setupStyling() {
         
-        //TODO: Limit, modify posterImageView width, height as ratio
         posterImageView.contentMode = .scaleAspectFit
         
         verticalStackView.distribution = .equalSpacing
@@ -148,8 +143,6 @@ class MovieDataCell: UITableViewCell, Presentable {
         userRatingLabel.text = cellData.userRating
     }
     
-    //TODO: AsDriver
-    //TODO: Move to UITableViewCellViewModel
     var movieImageListDataSource: Observable<[MovieImage]> {
         return movieImageListRelay.asObservable()
     }

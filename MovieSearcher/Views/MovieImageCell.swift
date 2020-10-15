@@ -43,7 +43,6 @@ class MovieImageCell: UICollectionViewCell, Presentable {
         NSLayoutConstraint.activate(constraints)
     }
     
-    //TODO: image ratio
     func setupStyling() {
         
     }
